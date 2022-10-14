@@ -9,6 +9,8 @@ class Helper
 
 public:
 	static std::shared_ptr<VertexArray> makeSphereVertexArray(int horizontalLevel, int verticalLevel, float radius);
+
+	static VertexArray* makeTrailVA(float eccentricity, float focalDistance);
 };
 
 // make vertex array which represents a sphere
@@ -81,5 +83,43 @@ std::shared_ptr<VertexArray> Helper::makeSphereVertexArray(int horizontalLevel, 
 	layout.push(GL_FLOAT, 3, GL_FALSE);
 
 	return std::make_shared<VertexArray>(vb, ib, layout);
+}
+
+// make trail va
+VertexArray* Helper::makeTrailVA(float eccentricity, float focalDistance)
+{
+	std::vector<float> vertexes;
+	std::vector<unsigned int> indices;
+	float ratio = sqrtf(1 - eccentricity * eccentricity);
+	float degree = 0.f;
+	glm::vec3 trailPos;
+	for (degree; degree < 360.f; degree += 0.5f)
+	{
+		trailPos.x = 0.f + cosf(glm::radians(degree)) * focalDistance;
+		trailPos.y = 0.f;
+		trailPos.z = 0.f + ratio * sinf(glm::radians(degree)) * focalDistance;
+		vertexes.push_back(trailPos.x);
+		vertexes.push_back(trailPos.y);
+		vertexes.push_back(trailPos.z);
+		vertexes.push_back(trailPos.x);
+		vertexes.push_back(trailPos.y);
+		vertexes.push_back(trailPos.z);
+		indices.push_back(vertexes.size() - 1);
+		indices.push_back(vertexes.size());
+	}
+	vertexes.push_back(trailPos.x);
+	vertexes.push_back(trailPos.y);
+	vertexes.push_back(trailPos.z);
+
+	VertexBuffer vb(&vertexes[0], vertexes.size() * sizeof(float));
+	IndexBuffer ib(&indices[0], indices.size());
+
+	BufferLayout layout;
+	layout.push(GL_FLOAT, 3, GL_FALSE);
+	layout.push(GL_FLOAT, 3, GL_FALSE);
+
+	VertexArray* va = new VertexArray(vb, ib, layout);
+
+	return va;
 }
 

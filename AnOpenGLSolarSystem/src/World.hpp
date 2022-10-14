@@ -71,37 +71,7 @@ void World::addPlanet(std::string name, std::string centerPlanet, float eccentri
 	_planetNameMap.insert(std::make_pair(name, planet));
 
 	// init trail vao
-	std::vector<float> vertexes;
-	std::vector<unsigned int> indices;
-	float ratio = sqrtf(1 - eccentricity * eccentricity);
-	float degree = 0.f;
-	glm::vec3 trailPos;
-	for (degree; degree < 360.f; degree += 0.5f)
-	{
-		trailPos.x = 0.f + cosf(glm::radians(degree)) * focalDistance;
-		trailPos.y = 0.f;
-		trailPos.z = 0.f + ratio * sinf(glm::radians(degree)) * focalDistance;
-		vertexes.push_back(trailPos.x);
-		vertexes.push_back(trailPos.y);
-		vertexes.push_back(trailPos.z);
-		vertexes.push_back(trailPos.x);
-		vertexes.push_back(trailPos.y);
-		vertexes.push_back(trailPos.z);
-		indices.push_back(vertexes.size() - 1);
-		indices.push_back(vertexes.size());
-	}
-	vertexes.push_back(trailPos.x);
-	vertexes.push_back(trailPos.y);
-	vertexes.push_back(trailPos.z);
-
-	VertexBuffer vb(&vertexes[0], vertexes.size() * sizeof(float));
-	IndexBuffer ib(&indices[0], indices.size());
-
-	BufferLayout layout;
-	layout.push(GL_FLOAT, 3, GL_FALSE);
-	layout.push(GL_FLOAT, 3, GL_FALSE);
-
-	VertexArray* va = new VertexArray(vb, ib, layout);
+	VertexArray* va = Helper::makeTrailVA(eccentricity, focalDistance);
 
 	_planetInfos.push_back({ planet, name, centerPlanet, eccentricity, focalDistance, va });
 }
@@ -212,8 +182,18 @@ void World::onImGuiRender()
 		char id4[64];
 		sprintf_s(id4, "Planet color##%s", info.name.c_str());
 
-		ImGui::SliderFloat(id1, &info.eccentricity, 0.01f, 0.99f, "%.2lf"); ImGui::SameLine();
-		ImGui::SliderFloat(id2, &info.focalDistance, 0.f, 1000.f, "%.2lf"); ImGui::SameLine();
+		if (ImGui::SliderFloat(id1, &info.eccentricity, 0.01f, 0.99f, "%.2lf")) {
+			VertexArray* va = Helper::makeTrailVA(info.eccentricity, info.focalDistance);
+			delete info.trail;
+			info.trail = va;
+		}
+		ImGui::SameLine();
+		if(ImGui::SliderFloat(id2, &info.focalDistance, 0.f, 1000.f, "%.2lf")) {
+			VertexArray* va = Helper::makeTrailVA(info.eccentricity, info.focalDistance);
+			delete info.trail;
+			info.trail = va;
+		}
+		ImGui::SameLine();
 		float mass = info.planet->mass();
 		if (ImGui::SliderFloat(id3, &mass, 1.f, 999999.f, "%.2lf")) info.planet->setMass(mass);
 		ImGui::PopItemWidth();
