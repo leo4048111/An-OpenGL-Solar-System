@@ -121,8 +121,8 @@ int main()
 		{
 			Controller::getInstance()->pause();
 
-			ImGui::SetNextWindowSize({ 959, 480 }, ImGuiCond_FirstUseEver);
-			ImGui::Begin("Menu(Readme)", 0, ImGuiWindowFlags_NoCollapse);
+			ImGui::SetNextWindowSize({ 570, 480 }, ImGuiCond_FirstUseEver);
+			ImGui::Begin("Menu(Readme)", 0, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
 			ImGui::Text("Keybinds for this demo system(Controllers only work when menu is closed!):");
 			ImGui::Text("Press [INSERT] to open/close menu");
 			ImGui::Text("Hold [W][A][S][D] to move forward/left/backward/right");

@@ -220,6 +220,7 @@ void World::onImGuiRender()
 		glm::vec4 color = info.planet->color();
 		if (ImGui::ColorEdit4(id4, &color.x)) info.planet->setColor(color);
 	}
+	ImGui::EndChild();
 }
 
 World::~World()
