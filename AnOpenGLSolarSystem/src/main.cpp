@@ -116,7 +116,7 @@ int main()
 		if (shouldDrawStars) g_world->renderStars(camera, shader, starCnt);
 		if (shouldRenderPlanetNames) g_world->renderPlanetNames(camera, display_w, display_h);
 		if (shouldRenderBasicStats) g_world->renderPlanetInfo(camera);
-		ImGui::GetForegroundDrawList()->AddText({ 20, (float)display_h - 30 }, ImGui::ColorConvertFloat4ToU32({ 255.f, 255.f, 255.f, 255.f }), "CS10043301 assignment2: A Lame solar system made by 2050250.");
+		ImGui::GetForegroundDrawList()->AddText({ 20, (float)display_h - 30 }, ImGui::ColorConvertFloat4ToU32({ 255.f, 255.f, 255.f, 255.f }), "CS10043301 assignment2: A basic solar system made by 2050250.");
 		if (g_showMenu)
 		{
 			Controller::getInstance()->pause();
