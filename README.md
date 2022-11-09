@@ -2,7 +2,7 @@
  A fancy solar system implemented with OpenGL and Dear ImGui.
 # Features
 + Basic physics: Implemented the well known law of universal gravitation.
-+ Basic lighting: Implented the Phong Lighting Model.
++ Basic lighting: Implemented the Phong Lighting Model.
 + Customizable: Eazily modifiable planet attributes with ImGui menu.
 + Some fancy but uselesss visuals: Feat. shiny skybox.
 # Keybinds
