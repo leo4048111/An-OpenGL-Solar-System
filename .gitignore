@@ -1,3 +1,5 @@
 .vs/*
 Debug/
 Release/
+build/
+.DS_Store

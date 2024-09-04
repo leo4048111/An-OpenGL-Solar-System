@@ -108,13 +108,13 @@ void World::renderPlanetInfo(Camera& camera)
 {
 	float indent = 0;
 	char buf1[256];
-	sprintf_s(buf1, "Camera position: x: %.3f, y: %.3f, z: %.3f, pitch: %.3f, yaw: %.3f", camera.position().x, camera.position().y, camera.position().z
+	snprintf(buf1, sizeof(buf1), "Camera position: x: %.3f, y: %.3f, z: %.3f, pitch: %.3f, yaw: %.3f", camera.position().x, camera.position().y, camera.position().z
 		, camera.pitch(), camera.yaw());
 	ImGui::GetBackgroundDrawList()->AddText({ 20, indent }, ImGui::ColorConvertFloat4ToU32({ 255.f, 255.f, 255.f, 255.f }), buf1);
 	for (auto& info : _planetInfos)
 	{
 		char buf[256];
-		sprintf_s(buf, "%s: x: %.3lf, y: %.3lf, z: %.3lf, mass, %.3lf, center: %s, ecc: %.3lf, fd: %.3lf", info.name.c_str(),
+		snprintf(buf, sizeof(buf), "%s: x: %.3lf, y: %.3lf, z: %.3lf, mass, %.3lf, center: %s, ecc: %.3lf, fd: %.3lf", info.name.c_str(),
 			info.planet->position().x, info.planet->position().y, info.planet->position().z, info.planet->mass(), info.centerPlanet.c_str(), info.eccentricity, info.focalDistance);
 		ImGui::GetBackgroundDrawList()->AddText({ 20, indent + 20 }, ImGui::ColorConvertFloat4ToU32({ 255.f, 255.f, 255.f, 255.f }), buf);
 		indent += 20;
@@ -174,13 +174,13 @@ void World::onImGuiRender()
 		ImGui::PushItemWidth(75.2);
 
 		char id1[64];
-		sprintf_s(id1, "Eccentricity##%s", info.name.c_str());
+		snprintf(id1, sizeof(id1), "Eccentricity##%s", info.name.c_str());
 		char id2[64];
-		sprintf_s(id2, "FocalDistance##%s", info.name.c_str());
+		snprintf(id2, sizeof(id2), "FocalDistance##%s", info.name.c_str());
 		char id3[64];
-		sprintf_s(id3, "Mass##%s", info.name.c_str());
+		snprintf(id3, sizeof(id3), "Mass##%s", info.name.c_str());
 		char id4[64];
-		sprintf_s(id4, "Planet color##%s", info.name.c_str());
+		snprintf(id4, sizeof(id4), "Planet color##%s", info.name.c_str());
 
 		if (ImGui::SliderFloat(id1, &info.eccentricity, 0.01f, 0.99f, "%.2lf")) {
 			VertexArray* va = Helper::makeTrailVA(info.eccentricity, info.focalDistance);

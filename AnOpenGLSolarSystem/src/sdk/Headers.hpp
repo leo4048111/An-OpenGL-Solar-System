@@ -30,7 +30,17 @@ inline void glClearError()
 	while (glGetError() != GL_NO_ERROR);
 }
 
-#define ASSERT(x) if(!(x)) __debugbreak();
+#ifdef _MSC_VER
+    #define DEBUG_BREAK() __debugbreak()
+#elif defined(__GNUC__) || defined(__clang__)
+    #include <signal.h>
+    #define DEBUG_BREAK() raise(SIGTRAP)
+#else
+    #include <cassert>
+    #define DEBUG_BREAK() assert(false)
+#endif
+
+#define ASSERT(x) if (!(x)) DEBUG_BREAK()
 
 #define GLCall(x) \
 glClearError(); \
